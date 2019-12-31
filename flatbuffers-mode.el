@@ -53,8 +53,7 @@
      (,(concat (flatbuffers-re-grab flatbuffers-re-ident) "[[:space:]]*:[^:]") 1 font-lock-variable-name-face)
 
      ;; Ensure we highlight `Foo' in a:Foo
-     (,(concat ":[[:space:]]*" (flatbuffers-re-grab flatbuffers-re-ident)) 1 font-lock-type-face)
-     )
+     (,(concat ":[[:space:]]*" (flatbuffers-re-grab flatbuffers-re-ident)) 1 font-lock-type-face))
 
     ;; Ensure we highlight `Foo` in `struct Foo` as a type.
     (mapcar #'(lambda (x)
@@ -63,8 +62,7 @@
             '(("enum" . font-lock-type-face)
               ("struct" . font-lock-type-face)
               ("union" . font-lock-type-face)
-              ("table" . font-lock-type-face))
-     )))
+              ("table" . font-lock-type-face)))))
 
 ;;;###autoload
 (define-derived-mode flatbuffers-mode prog-mode "Flatbuffers"
@@ -75,11 +73,11 @@
   ;; :syntax-table flatbuffers-mode-syntax-table
 
   ;; Fonts
+  (setq comment-start "//")
   (setq-local font-lock-defaults '(flatbuffers-mode-font-lock-keywords
                                    nil nil nil nil
-                                   (font-lock-syntactic-face-function . flatbuffers-mode-syntactic-face-function)
-                                   ))
-)
+                                   (font-lock-syntactic-face-function . flatbuffers-mode-syntactic-face-function)))
+  (font-lock-add-keywords nil `((,(concat comment-start ".+") . font-lock-comment-face))))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.fbs\\'" . flatbuffers-mode))
