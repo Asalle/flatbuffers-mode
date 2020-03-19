@@ -64,6 +64,11 @@
               ("union" . font-lock-type-face)
               ("table" . font-lock-type-face)))))
 
+(defvar flatbuffers-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?/ ". 14")
+    table))
+
 ;;;###autoload
 (define-derived-mode flatbuffers-mode prog-mode "Flatbuffers"
   "Major mode for Flatbuffers code.
