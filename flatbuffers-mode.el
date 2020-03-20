@@ -19,6 +19,8 @@
 (defconst flatbuffers-special-types
   '("double" "bool" "uint" "ulong"))
 
+(defconst comment-start "//")
+
 (defconst flatbuffers-re-ident "[[:word:][:multibyte:]_][[:word:][:multibyte:]_[:digit:]]*")
 
 (defconst flatbuffers-re-generic
@@ -31,7 +33,6 @@
   (concat (flatbuffers-re-word itype)
 	  (flatbuffers-re-shy flatbuffers-re-generic) "?"
 	  "[[:space:]]+" (flatbuffers-re-grab flatbuffers-re-ident)))
-
 
 (defvar flatbuffers-mode-font-lock-keywords
   (append
@@ -75,14 +76,13 @@
 
 \\{flatbuffers-mode-map}"
   :group 'flatbuffers-mode
-  ;; :syntax-table flatbuffers-mode-syntax-table
+  :syntax-table flatbuffers-mode-syntax-table
 
   ;; Fonts
-  (setq comment-start "//")
   (setq-local font-lock-defaults '(flatbuffers-mode-font-lock-keywords
                                    nil nil nil nil
                                    (font-lock-syntactic-face-function . flatbuffers-mode-syntactic-face-function)))
-  (font-lock-add-keywords nil `((,(concat comment-start ".+") . font-lock-comment-face))))
+  (font-lock-add-keywords nil `((,(concat comment-start ".*") 0 font-lock-comment-face t))))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.fbs\\'" . flatbuffers-mode))
