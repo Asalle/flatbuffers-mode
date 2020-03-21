@@ -14,7 +14,7 @@
 
 ;; Font-locking definitions and helpers
 (defconst flatbuffers-mode-keywords
-  '("namespace" "root_type"))
+  '("namespace" "root_type" "struct" "table" "enum" "union" "required" "include" "attribute" "rpc_service" "file_extension" "file_identifier"))
 
 (defconst flatbuffers-special-types
   '("double" "bool" "uint" "ulong"))
@@ -37,19 +37,11 @@
 (defvar flatbuffers-mode-font-lock-keywords
   (append
    `(
-     ;; Keywords proper
+     ;; Keywords
      (,(regexp-opt flatbuffers-mode-keywords 'symbols) . font-lock-keyword-face)
 
      ;; Special types
      (,(regexp-opt flatbuffers-special-types 'symbols) . font-lock-type-face)
-
-     ;; The keywords
-     ("\\_<struct\\_>" . 'font-lock-keyword-face)
-     ("\\_<table\\_>" . 'font-lock-keyword-face)
-     ("\\_<enum\\_>" . 'font-lock-keyword-face)
-     ("\\_<union\\_>" . 'font-lock-keyword-face)
-     ("\\_<required\\_>" . 'font-lock-keyword-face)
-     ("\\_<kek\\_>" . 'font-lock-keyword-face)
 
      (,(concat (flatbuffers-re-grab flatbuffers-re-ident) "[[:space:]]*:[^:]") 1 font-lock-variable-name-face)
 
@@ -63,6 +55,7 @@
             '(("enum" . font-lock-type-face)
               ("struct" . font-lock-type-face)
               ("union" . font-lock-type-face)
+              ("root_type" . font-lock-type-face)
               ("table" . font-lock-type-face)))))
 
 (defvar flatbuffers-mode-syntax-table
