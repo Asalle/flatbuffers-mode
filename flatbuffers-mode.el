@@ -1,9 +1,15 @@
-;;; flatbuffers-mode.el --- major mode for editing flatbuffers.
+;;; flatbuffers-mode.el --- Major mode for editing flatbuffers  -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2019-2020 Asal Mirzaieva
 
 ;; Author: Asal Mirzaieva <asalle.kim@gmail.com>
 ;; Created: 12-Nov-2019
 ;; Version: 0.2
 ;; Keywords: flatbuffers languages
+;; Homepage: https://github.com/Asalle/flatbuffers-mode
+;; Package-Requires: ((emacs "24.3"))
+
+;; This file is not part of GNU Emacs.
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +23,8 @@
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
 
 ;; Installation:
 ;;   - Put `flatbuffers-mode.el' in your Emacs load-path.
@@ -32,17 +40,19 @@
 (defconst flatbuffers-special-types
   '("double" "bool" "uint" "ulong"))
 
-(defconst comment-start "//")
+(defconst flatbuffers-comment-start "//")
 
 (defconst flatbuffers-re-ident "[[:word:][:multibyte:]_][[:word:][:multibyte:]_[:digit:]]*")
 
 (defconst flatbuffers-re-generic
   (concat "<[[:space:]]*'" flatbuffers-re-ident "[[:space:]]*>"))
 
-(defun flatbuffers-re-word (inner) (concat "\\<" inner "\\>"))
-(defun flatbuffers-re-grab (inner) (concat "\\(" inner "\\)"))
-(defun flatbuffers-re-shy (inner) (concat "\\(?:" inner "\\)"))
+(defun flatbuffers-re-word (inner) "Generate word regex. INNER is the word to enclose." (concat "\\<" inner "\\>"))
+(defun flatbuffers-re-grab (inner) "Generate grab regex. INNER is the expression to enclose." (concat "\\(" inner "\\)"))
+(defun flatbuffers-re-shy (inner) "Generate shy regex. INNER is the expression to enclose." (concat "\\(?:" inner "\\)"))
+
 (defun flatbuffers-re-item-def (itype)
+  "Highlight the keywords. ITYPE is the type of the keyword."
   (concat (flatbuffers-re-word itype)
 	  (flatbuffers-re-shy flatbuffers-re-generic) "?"
 	  "[[:space:]]+" (flatbuffers-re-grab flatbuffers-re-ident)))
@@ -83,17 +93,20 @@
 \\{flatbuffers-mode-map}"
   :group 'flatbuffers-mode
   :syntax-table flatbuffers-mode-syntax-table
+  (setq major-mode 'flatbuffers-mode
+        mode-name "Flatbuffers")
 
   ;; Fonts
   (setq-local font-lock-defaults '(flatbuffers-mode-font-lock-keywords
                                    nil nil nil nil
                                    (font-lock-syntactic-face-function . flatbuffers-mode-syntactic-face-function)))
-  (font-lock-add-keywords nil `((,(concat comment-start ".*") 0 font-lock-comment-face t))))
+  (font-lock-add-keywords nil `((,(concat flatbuffers-comment-start ".*") 0 font-lock-comment-face t))))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.fbs\\'" . flatbuffers-mode))
 
 (defun flatbuffers-mode-reload ()
+  "Reload the flatbuffers mode in current buffer."
   (interactive)
   (unload-feature 'flatbuffers-mode)
   (require 'flatbuffers-mode)
