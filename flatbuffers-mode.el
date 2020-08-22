@@ -26,6 +26,9 @@
 
 ;;; Commentary:
 
+;; FlatBuffers is an efficient cross platform serialization library for C++, C#, C, Go, Java, Kotlin, JavaScript, Lobster, Lua, TypeScript, PHP, Python, Rust and Swift. It was originally created at Google for game development and other performance-critical applications.
+;; https://google.github.io/flatbuffers/
+
 ;; Installation:
 ;;   - Put `flatbuffers-mode.el' in your Emacs load-path.
 ;;   - Add this line to your .emacs file:
@@ -72,7 +75,7 @@
      (,(concat ":[[:space:]]*" (flatbuffers-re-grab flatbuffers-re-ident)) 1 font-lock-type-face))
 
     ;; Ensure we highlight `Foo` in `struct Foo` as a type.
-    (mapcar #'(lambda (x)
+    (mapcar (lambda (x)
                 (list (flatbuffers-re-item-def (car x))
                       1 (cdr x)))
             '(("enum" . font-lock-type-face)
@@ -93,8 +96,6 @@
 \\{flatbuffers-mode-map}"
   :group 'flatbuffers-mode
   :syntax-table flatbuffers-mode-syntax-table
-  (setq major-mode 'flatbuffers-mode
-        mode-name "Flatbuffers")
 
   ;; Fonts
   (setq-local font-lock-defaults '(flatbuffers-mode-font-lock-keywords
