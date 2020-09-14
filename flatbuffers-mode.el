@@ -43,8 +43,6 @@
 (defconst flatbuffers-special-types
   '("double" "bool" "uint" "ulong"))
 
-(defconst flatbuffers-comment-start "//")
-
 (defconst flatbuffers-re-ident "[[:word:][:multibyte:]_][[:word:][:multibyte:]_[:digit:]]*")
 
 (defconst flatbuffers-re-generic
@@ -84,24 +82,15 @@
               ("root_type" . font-lock-type-face)
               ("table" . font-lock-type-face)))))
 
-(defvar flatbuffers-mode-syntax-table
-  (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?/ ". 14")
-    table))
-
 ;;;###autoload
-(define-derived-mode flatbuffers-mode prog-mode "Flatbuffers"
+(define-derived-mode flatbuffers-mode c-mode "Flatbuffers"
   "Major mode for Flatbuffers code.
 
 \\{flatbuffers-mode-map}"
   :group 'flatbuffers-mode
-  :syntax-table flatbuffers-mode-syntax-table
 
   ;; Fonts
-  (setq-local font-lock-defaults '(flatbuffers-mode-font-lock-keywords
-                                   nil nil nil nil
-                                   (font-lock-syntactic-face-function . flatbuffers-mode-syntactic-face-function)))
-  (font-lock-add-keywords nil `((,(concat flatbuffers-comment-start ".*") 0 font-lock-comment-face t))))
+  (setq-local font-lock-defaults '(flatbuffers-mode-font-lock-keywords)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.fbs\\'" . flatbuffers-mode))
